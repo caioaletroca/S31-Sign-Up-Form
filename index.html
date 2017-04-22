@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="author" content="S31 Corporation">
+		<title>Subscribe</title>
+	</head>
+	<body>
+		<link rel="stylesheet" type="text/css" href="css/base.css">
+		<script src="http://hammerjs.github.io/dist/hammer.min.js"></script>
+		<script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
+		<script src="js/ractive-events-swipe.js"></script>
+		<script src="js/moment.min.js"></script>
+		<script src='js/jquery-3.2.1.js'></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/qwest/4.4.5/qwest.min.js"></script>
+
+		<!--Ractive Holder-->
+		<div id='container'></div>
+
+		<!--Ractive Control-->
+		<script id='main' type="text/ractive">
+
+			<!--Navigation Bar For Mobile-->
+			<nav id="navigation_mobile" on-swipeleft="@this.CloseNavegation()" style="left: {{nav_left_position}}px; height: {{nav_height}}px; display: {{nav_display}}">
+				<span id="close_nav" on-click="@this.CloseNavegation()"></span>
+				<div class="nav_logo">
+					<img src="resources/discord_icon.png">
+					<p>S31 Corporation</p>
+				</div>
+				<a href="#">Home</a>
+				<a href="">About</a>
+			</nav>
+			<!--Navigation Bar For Mobile-->
+
+			<!--Header-->
+			<div id='header'>
+				<div class="header_container">
+					<!--Device Menu-->
+					<div class="device_menu" on-click="@this.OpenNavegation()"></div>
+					<!--Device Menu-->
+
+					<!--S31 Logo-->
+					<div class="head_logo">
+						<a href="#">
+							<img src="resources/discord_icon.png">
+						</a>
+						<a href="#">
+							<div id="name_logo">
+								<p>S31 Corporation</p>
+							</div>
+						</a>
+					</div>
+					<!--S31 Logo-->
+
+					<!--Header Links-->
+					<div class="header_links">
+						<ul>
+							<li>
+								<a href="#">Home</a>
+							</li>
+							<li>
+								<a href="">About</a>
+							</li>
+						</ul>
+					</div>
+					<!--Header Links-->
+
+					
+				</div>
+			</div>
+			<!--Header-->
+
+			<!--Content-->
+	  		<div id='content'>
+	  			<!--Development Advise-->
+				<div class="development_advise">
+					<p><span>Attention:</span> the official website is under development and some functions may not work properly. However, the subscription form is fully operational.</p>
+				</div>
+				<!--Development Advise-->
+
+				<h1 id="form_title">Tester Sign Up</h1>
+
+				<!--Main Subscription Form-->
+	  			{{#with credentials}}
+  				<div class="inputform">
+	  				<div class="text_field_group">
+	  					<div class="input_field">
+							<input class="{{#if error_name.state}}error_input{{/if}}" type="text" placeholder="Name" autofocus value="{{name}}" on-blur='@this.CheckName()'>
+							<p class="error_message" style="display: {{#if error_name.state}}flex{{else}}none{{/if}}">{{error_name.message}}</p>
+						</div>
+						<div class="input_field">
+							<input class="{{#if error_email}}error_input{{/if}}" type="email" placeholder="E-mail Address" value="{{email}}" on-blur='@this.CheckEmail()'>
+							<p class="error_message" style="display: {{#if error_email}}flex{{else}}none{{/if}}">Insert a valid E-mail adress.</p>
+						</div>
+						<div class="input_field">
+							<input class="{{#if error_password}}error_input{{/if}}" type="password" placeholder="Password" value="{{password}}" on-blur='@this.CheckPassword()'>
+							<p class="error_message" style="display: {{#if error_password}}flex{{else}}none{{/if}}">Your password must be lower than 100 characters.</p>
+						</div>
+
+						<div class="input_field">
+							<div class="birth_input">
+								<input class="{{#if error_birth}}error_input{{/if}}" type="number" name="day" placeholder="Day" value='{{day}}' on-blur='@this.CheckDay()'>
+								<select class="{{#if error_birth}}error_input{{/if}}" value='{{month}}'>
+									{{#months}}
+									<option value="{{name}}">{{name}}</option>
+									{{/months}}
+								</select>
+								<input class="{{#if error_birth}}error_input{{/if}}" type="number" name="year" placeholder="Year" value='{{year}}' on-blur='@this.CheckYear()'>
+							</div>
+							<p class="error_message" style="display: {{#if error_birth}}flex{{else}}none{{/if}}">Insert a valid birth date.</p>
+						</div>
+
+						<div class="input_field">
+							<select class="gender_select">
+								{{#genders}}
+								<option value="{{name}}">{{name}}</option>
+								{{/genders}}
+							</select>
+							<p class="error_message" style="display: {{#if error_gender}}flex{{else}}none{{/if}}">You must select an option.</p>
+						</div>
+					</div>
+
+					
+
+					<!--Contract CheckBox-->
+					<div class="input_field">
+						<div class="contract_radio_group {{#if error_contract}}error_input{{/if}}" on-click="@this.SetContract()">
+							<input type="checkbox" name="contract" checked="{{contract}}">I accept the <a href="">Terms of Contract</a>
+						</div>
+						<p class="error_message" style="display: {{#if error_contract}}flex{{else}}none{{/if}}">You must read and accept the Terms of Contract to sign up.</p>
+					</div>
+					<!--Contract CheckBox-->
+
+					<input type="button" name="singup" value="Sign Up" on-click='@this.submit()'>
+				</div>
+	  			{{/with}}
+		  		<!--Main Subscription Form-->
+	  		</div>
+	  		<!--Content-->
+
+			<!--Footer-->
+	  		<footer class="footer">
+	  			<!--Footer Top-->
+	  			<div class="footer_top">
+		  			<!--Social Links-->
+		  			<div class="social_links">
+		  				<div class="email_links">
+			  				<p>S31 Corporation | s31corporation@gmail.com</p>
+			  			</div>
+
+			  			<div class="social_icons">
+			  				<ul>
+			  					<li>
+						  			<a href="https://discord.gg/tHYexDR">
+						  				<img class="img_link" src="resources/discord_icon.png" title="Discord">
+						  				
+						  			</a>
+				  				</li>
+				  				<li>
+						  			<a href="https://discord.gg/tHYexDR">
+						  				<img class="img_link" src="resources/discord_icon.png" title="Discord">
+						  			</a>
+				  				</li>
+				  				<li>
+						  			<a href="https://discord.gg/tHYexDR">
+						  				<img class="img_link" src="resources/discord_icon.png" title="Discord">
+						  			</a>
+				  				</li>
+				  			</ul>
+			  			</div>
+		  			</div>
+	  				<!--Social Links-->
+	  			</div>
+	  			<!--Footer Top-->
+
+	  			<!--Footer Botton-->
+	  			<div class="links">
+		  			<p>
+		  				<a href="">Privacy Politics</a>
+		  				<a href="">Developer Team</a>
+		  				<a href="">WebSite Map</a>
+		  			</p>
+		  			<p id="CopyrightText">2017 | S31 Corporation</p>
+	  			</div>
+	  			<!--Footer Botton-->
+	  		</footer>
+	  		<!--Footer-->
+
+  		</script>
+  		<!--Ractive Control-->
+
+  		<!--RACTIVE SCRIPT-->
+  		<script type="text/javascript">
+  			var ractive = new Ractive({
+	      		el: '#container',
+	      		template: '#main',
+
+	    		data: {
+	    			credentials: {
+	    				name: '',
+	    				email: '',
+	    				password: '',
+	    				day: '',
+	    				month: 'Birth Month',
+	    				year: '',
+	    				gender: '',
+	    			},
+
+	    			months: [
+	    				{ name: 'January' },
+	    				{ name: 'February' },
+	    				{ name: 'Mars' },
+	    				{ name: 'April' },
+	    				{ name: 'June' },
+	    				{ name: 'July' },
+	    				{ name: 'August' },
+	    				{ name: 'September' },
+	    				{ name: 'October' },
+	    				{ name: 'November' },
+	    				{ name: 'December' }
+	    			],
+
+	    			genders: [
+	    				{ name: 'Male' },
+	    				{ name: 'Female' },
+	    				{ name: 'Other' }
+	    			],
+
+	    			credence : {
+	    				name: 'casa',
+	    				email: 'oiee',
+	    			},
+
+	    			contract: '',
+
+	    			//Error Messages Control
+	    			error_name: [
+	    				{ state: false },
+	    				{ message: '' }
+	    			],
+	    			error_email: false,
+	    			error_password: false,
+	    			error_birth: false,
+	    			error_gender: false,
+	    			error_contract: false,
+
+	    			//Navegation Bar Control
+	    			nav_left_position: -500,
+	    			nav_height: 0,
+	    			nav_display: 'none',
+	    		},
+
+	    		server: qwest,
+	    		api: 'http://localhost:8080',
+
+	    		start: function() {
+	    			this.server.base = this.api;
+
+	    			this.set('nav_height', document.documentElement.scrollHeight);
+	    		},
+
+	    		//Mobile Control
+	    		OpenNavegation: function() {
+					this.set('nav_display', 'flex');
+					this.animate('nav_left_position', 0, {
+	    				easing: 'easeOut',
+	    				duration: 300,
+	    			});
+	    		},
+
+	    		CloseNavegation: function() {
+	    			this.animate('nav_left_position', -500, {
+	    				easing: 'easeInOut',
+	    				duration: 300,
+	    			}).then( function() {
+						this.set('nav_display', 'none');
+	    			});
+	    		},
+
+	    		//Form Control
+	    		SetContract: function() {
+	    			if(this.get('contract'))
+	    				this.set('contract', '');
+	    			else
+	    				this.set('contract', '1');
+	    		},
+
+	    		//Validations Functions
+	    		CheckName: function() {
+	    			var name = this.get('credentials.name');
+	    			console.log(name.lenght);
+
+	    			if(name.lenght >= 10)
+    				{
+	    				this.set('error_name.state', true);
+	    				this.set('error_name.message', 'Name inserted was too long');
+	    				console.log(this.get('error_name.message'));
+	    				return false;
+    				}
+	    			else
+	    			{
+	    				this.set('error_name.state', false);
+	    				this.set('error_name.message', '');
+	    				return true;
+	    			}
+	    		},
+
+	    		CheckEmail: function() {
+	    			var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	    			var email = this.get('credentials.email');
+
+	    			if(email.Lenghts >= 50)
+					{
+    					this.set('error_email', true);
+    					return false;
+    				}
+	    			else if(!filter.test(email))
+    				{
+	    				this.set('error_email', true);
+	    				return false;
+    				}
+	    			else
+	    			{
+	    				this.set('error_email', false);
+	    				return true;
+	    			}
+	    		},
+
+	    		CheckPassword: function() {
+	    			var password = this.get('credentials.password');
+
+	    			if(password.Lenghts > 100)
+	    			{
+	    				this.set('error_password', true);
+	    				return false;
+	    			}
+	    			else
+	    			{
+	    				this.set('error_password', false);
+	    				return true;	
+	    			}
+	    		},
+
+	    		CheckDay: function() {
+	    			var day = this.get('credentials.day');
+
+	    			if(day > 31)
+	    			{
+	    				this.set('credentials.day', 31);
+	    				this.set('error_birth', true);
+	    				return false;
+	    			}
+	    			else if(day < 1)
+	    			{
+	    				this.set('credentials.day', 1);
+	    				this.set('error_birth', true);
+	    				return false;
+	    			}
+	    			else
+	    			{
+	    				this.set('error_birth', false);
+	    				return true;
+	    			}
+	    		},
+
+	    		CheckYear: function() {
+	    			var year = this.get('credentials.year');
+
+	    			if(year > moment().year())
+	    			{
+	    				this.set('credentials.year', moment().year());
+	    				this.set('error_birth', true);
+	    				return false;
+	    			}
+	    			else if(year < moment().year() - 100)
+	    			{
+	    				this.set('credentials.year', moment().year() - 100);
+	    				this.set('error_birth', true);
+	    				return false;
+	    			}
+	    			else
+	    			{
+	    				this.set('error_birth', false);
+	    				return true;
+	    			}
+	    		},
+
+	    		CheckDate: function(day, month, year) {
+	    			if(!moment(day + '-' + month + '-' + year, 'DD-MM-YYYY').isValid())
+	    				return false;
+	    			else if(!(moment(day + '-' + month + '-' + year, 'MM/DD/YYYY').isBefore(moment())))
+	    				return false;
+					else
+		    			return true;
+	    		},
+
+	    		CheckContract: function() {
+	    			if(this.get('contract') == '')
+	    			{
+	    				this.set('error_contract', true);
+	    				return false;
+	    			}
+	    			else
+	    			{
+	    				this.set('error_contract', false);
+	    				return true;
+	    			}
+	    		},
+
+	    		CheckForm: function() {
+	    			if(!CheckName())
+	    				return false;
+	    			else if(!CheckEmail())
+	    				return false;
+	    			else if(!CheckDate())
+	    				return false;
+	    			else if(!CheckContract())
+	    				return false;
+	    			else
+	    				return true;
+	    		},
+
+	    		submit: function() {
+	    			//if(this.CheckForm())
+	    			//{
+	    				console.log(this.get('credence'));
+
+	    				/*
+	    				this.server.post('/signup/', this.get('credence.name')).then(function(xhr, response) {
+							console.log(response);
+	    				}.bind(this));
+	    				*/
+
+	    				/*
+	    				this.server.post('/posttest').then(function(xhr, response) {
+
+	    				}.bind(this));
+	    				*/
+	    				
+	    				$.get('http://localhost:8080/test/casa', function(response) {
+	    					console.log(response);
+	    				});
+
+	    				$.post('http://localhost:8080/posttest', function(response) {
+	    					console.log(response);
+	    				});
+
+	    				/*
+	    				this.server.get('/test/' + this.get('credence.name')).then(function(xhr, response) {
+							console.log(response);
+	    				}.bind(this));
+	    				*/
+	    			//}
+	    		},
+			});
+
+  			ractive.observe('credentials', function() {
+  				
+  			});
+
+  			ractive.start();
+  		</script>
+  		<!--RACTIVE SCRIPT-->
+	</body>
+</html>
