@@ -1,6 +1,5 @@
 html,
-body,
-#container {
+body {
 	/*Basic Setup*/
 	padding: 0;
 	margin: 0;
@@ -207,7 +206,6 @@ body,
 	text-indent: 25px;
 	font-size: 0.8em;
 	color: darkred;
-	text-shadow: 1px 1px rgb(255, 210, 210);
 
 	background-color: rgb(255, 232, 232);
 }
