@@ -43,7 +43,7 @@
 			<div id='header'>
 				<div class="header_container">
 					<!--Device Menu-->
-					<div class="device_menu" on-click="@this.OpenNavegation()"></div>
+					<div class="device_menu" on-click="@this.OpenNavegation()"><div></div></div>
 					<!--Device Menu-->
 
 					<!--S31 Logo-->
@@ -225,17 +225,17 @@
 				data: function () {
 					return {
 						credentials: {
-							nick: '',
-							name: '',
-							email: '',
+							nick: 'Caio_Aletroca',
+							name: 'Caio Alexandre',
+							email: 'caio_aletroca@hotmail.com',
 							password: [
-								{ principal: '' },
-								{ confirm: '' }
+								{ principal: 'casinha' },
+								{ confirm: 'casinha' }
 							],
-							day: '',
-							month: '',
-							year: '',
-							gender: '',
+							day: '05',
+							month: 'January',
+							year: '1997',
+							gender: 'Male',
 						},
 
 						months: [
@@ -293,7 +293,7 @@
 				},
 
 				server: qwest,
-				api: 'http://localhost:8080',
+				api: 'http://192.168.25.219:8080',
 
 				CheckSpecialCharacters: function(text) {
 					return /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(text);
