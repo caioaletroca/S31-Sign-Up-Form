@@ -102,8 +102,10 @@
   				<div class="inputform">
 	  				<div class="text_field_group">
 	  					<div class="input_field">
-							<input class="{{#if error_nick}}error_input{{/if}}" type="text" placeholder="Nick" autofocus value="{{nick}}" on-blur='@this.CheckNick()'>
-							<p class="error_message" style="display: {{#if error_nick}}flex{{else}}none{{/if}}">Nickname inserted is too long.</p>
+							<input class="{{#if error_nick.state}}error_input{{/if}}" type="text" placeholder="Nick" autofocus value="{{nick}}" on-blur='@this.CheckNick()'>
+							{{#error_nick.state}}
+							<p class="error_message">{{error_nick.message}}</p>
+							{{/error_nick.state}}
 						</div>
 	  					<div class="input_field">
 							<input class="{{#if error_name.state}}error_input{{/if}}" type="text" placeholder="Name" autofocus value="{{name}}" on-blur='@this.CheckName()'>
@@ -259,7 +261,10 @@
 						contract: '',
 
 						//Error Messages Control
-						error_nick: false,
+						error_nick: [
+							{ state: false },
+							{ message: '' }
+						],
 						error_name: [
 							{ state: false },
 							{ message: '' }
@@ -289,6 +294,10 @@
 
 				server: qwest,
 				api: 'http://localhost:8080',
+
+				CheckSpecialCharacters: function(text) {
+					return /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(text);
+				},
 
 				start: function() {
 					this.server.base = this.api;
@@ -336,12 +345,20 @@
 
 					if(nick.length >= 50)
 					{
-						this.set('error_nick', true);
+						this.set('error_nick.state', true);
+						this.set('error_nick.message', 'Nickname inserted was too long');
+						return false;
+					}
+					else if(this.CheckSpecialCharacters(nick))
+					{
+						this.set('error_nick.state', true);
+						this.set('error_nick.message', 'Do not use special characters, please insert a valid nickname.');
 						return false;
 					}
 					else
 					{
-						this.set('error_nick', false);
+						this.set('error_nick.state', false);
+						this.set('error_nick.message', '');
 						return true;
 					}
 				},
@@ -349,10 +366,16 @@
 				CheckName: function() {
 					var name = this.get('credentials.name');
 
-					if(name.length >= 255)
+					if(name.length >= 100)
 					{
 						this.set('error_name.state', true);
 						this.set('error_name.message', 'Name inserted was too long');
+						return false;
+					}
+					else if(this.CheckSpecialCharacters(name))
+					{
+						this.set('error_name.state', true);
+						this.set('error_name.message', 'Do not use special characters, please insert a valid name.');
 						return false;
 					}
 					else
