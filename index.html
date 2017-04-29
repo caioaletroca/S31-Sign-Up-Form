@@ -3,17 +3,23 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="csrf-token" content="{{csrf_token()}}">
 		<meta name="author" content="S31 Corporation">
 		<title>Subscribe</title>
 	</head>
 	<body>
+		<!--CSS Styles-->
 		<link rel="stylesheet" type="text/css" href="css/base.css">
+		<link rel="stylesheet" type="text/css" href="css/mobile.css">
+
+		<!--JavaScript-->
 		<script src="http://hammerjs.github.io/dist/hammer.min.js"></script>
 		<script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
 		<script src="js/ractive-events-swipe.js"></script>
 		<script src="js/moment.min.js"></script>
 		<script src='js/jquery-3.2.1.js'></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/qwest/4.4.5/qwest.min.js"></script>
+		<script src='js/script.js'></script>
 
 		<!--Ractive Holder-->
 		<div id='container'></div>
@@ -79,12 +85,26 @@
 				</div>
 				<!--Development Advise-->
 
+				<!--Server Error Box-->
+				{{#with server_message}}
+				{{#Visible}}
+				<div class="{{#if State}}message_box_accept{{else}}message_box_error{{/if}}">
+					<p>{{Message}}</p>
+				</div>
+				{{/Visible}}
+				{{/with}}
+				<!--Server Error Box-->
+
 				<h1 id="form_title">Tester Sign Up</h1>
 
 				<!--Main Subscription Form-->
 	  			{{#with credentials}}
   				<div class="inputform">
 	  				<div class="text_field_group">
+	  					<div class="input_field">
+							<input class="{{#if error_nick}}error_input{{/if}}" type="text" placeholder="Nick" autofocus value="{{nick}}" on-blur='@this.CheckNick()'>
+							<p class="error_message" style="display: {{#if error_nick}}flex{{else}}none{{/if}}">Nickname inserted is too long.</p>
+						</div>
 	  					<div class="input_field">
 							<input class="{{#if error_name.state}}error_input{{/if}}" type="text" placeholder="Name" autofocus value="{{name}}" on-blur='@this.CheckName()'>
 							<p class="error_message" style="display: {{#if error_name.state}}flex{{else}}none{{/if}}">{{error_name.message}}</p>
@@ -136,7 +156,7 @@
 					</div>
 					<!--Contract CheckBox-->
 
-					<input type="button" name="singup" value="Sign Up" on-click='@this.submit()'>
+					<input type="button" name="singup" value="Sign Up" on-click='@this.Submit()'>
 				</div>
 	  			{{/with}}
 		  		<!--Main Subscription Form-->
@@ -196,329 +216,350 @@
 
   		<!--RACTIVE SCRIPT-->
   		<script type="text/javascript">
-  			var ractive = new Ractive({
-	      		el: '#container',
-	      		template: '#main',
+			var S31 = Ractive.extend({
+				el: '#container',
+				template: '#main',
 
-	    		data: {
-	    			credentials: {
-	    				name: '',
-	    				email: '',
-	    				password: [
-	    					{ principal: '' },
-	    					{ confirm: '' }
-	    				],
-	    				day: '',
-	    				month: '',
-	    				year: '',
-	    				gender: '',
-	    			},
+				data: function () {
+					return {
+						credentials: {
+							nick: '',
+							name: '',
+							email: '',
+							password: [
+								{ principal: '' },
+								{ confirm: '' }
+							],
+							day: '',
+							month: '',
+							year: '',
+							gender: '',
+						},
 
-	    			months: [
-	    				{ name: 'January' },
-	    				{ name: 'February' },
-	    				{ name: 'Mars' },
-	    				{ name: 'April' },
-	    				{ name: 'June' },
-	    				{ name: 'July' },
-	    				{ name: 'August' },
-	    				{ name: 'September' },
-	    				{ name: 'October' },
-	    				{ name: 'November' },
-	    				{ name: 'December' }
-	    			],
+						months: [
+							{ name: 'January' },
+							{ name: 'February' },
+							{ name: 'Mars' },
+							{ name: 'April' },
+							{ name: 'June' },
+							{ name: 'July' },
+							{ name: 'August' },
+							{ name: 'September' },
+							{ name: 'October' },
+							{ name: 'November' },
+							{ name: 'December' }
+						],
 
-	    			genders: [
-	    				{ name: 'Male' },
-	    				{ name: 'Female' },
-	    				{ name: 'Other' }
-	    			],
+						genders: [
+							{ name: 'Male' },
+							{ name: 'Female' },
+							{ name: 'Other' }
+						],
 
-	    			credence : {
-	    				name: 'casa',
-	    				email: 'oiee',
-	    			},
+						contract: '',
 
-	    			contract: '',
+						//Error Messages Control
+						error_nick: false,
+						error_name: [
+							{ state: false },
+							{ message: '' }
+						],
+						error_email: false,
+						error_password: [
+							{ principal: false },
+							{ confirm: false }
+						],
+						error_birth: false,
+						error_gender: false,
+						error_contract: false,
 
-	    			//Error Messages Control
-	    			error_name: [
-	    				{ state: false },
-	    				{ message: '' }
-	    			],
-	    			error_email: false,
-	    			error_password: [
-	    				{ principal: false },
-	    				{ confirm: false }
-	    			],
-	    			error_birth: false,
-	    			error_gender: false,
-	    			error_contract: false,
+						//Server Message Control
+						server_message: [
+							{ Visible: false },
+							{ State: false },
+							{ Message: '' }
+						],
 
-	    			//Navegation Bar Control
-	    			nav_left_position: -500,
-	    			nav_height: 0,
-	    			nav_display: 'none',
-	    		},
+						//Navegation Bar Control
+						nav_left_position: -500,
+						nav_height: 0,
+						nav_display: 'none',
+					}
+				},
 
-	    		server: qwest,
-	    		api: 'http://localhost:8080',
+				server: qwest,
+				api: 'http://localhost:8080',
 
-	    		start: function() {
-	    			this.server.base = this.api;
+				start: function() {
+					this.server.base = this.api;
 
-	    			this.set('nav_height', document.documentElement.scrollHeight);
-	    		},
+					this.set('nav_height', document.documentElement.scrollHeight);
 
-	    		//Mobile Control
-	    		OpenNavegation: function() {
+					/*
+					$.ajaxSetup({
+					    headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					*/
+				},
+
+				//Mobile Control
+				OpenNavegation: function() {
 					this.set('nav_display', 'flex');
 					this.animate('nav_left_position', 0, {
-	    				easing: 'easeOut',
-	    				duration: 300,
-	    			});
-	    		},
+						easing: 'easeOut',
+						duration: 300,
+					});
+				},
 
-	    		CloseNavegation: function() {
-	    			this.animate('nav_left_position', -500, {
-	    				easing: 'easeInOut',
-	    				duration: 300,
-	    			}).then( function() {
+				CloseNavegation: function() {
+					this.animate('nav_left_position', -500, {
+						easing: 'easeInOut',
+						duration: 300,
+					}).then( function() {
 						this.set('nav_display', 'none');
-	    			});
-	    		},
+					});
+				},
 
-	    		//Form Control
-	    		SetContract: function() {
-	    			if(this.get('contract'))
-	    				this.set('contract', '');
-	    			else
-	    				this.set('contract', '1');
-	    		},
+				//Form Control
+				SetContract: function() {
+					if(this.get('contract'))
+						this.set('contract', '');
+					else
+						this.set('contract', '1');
+				},
 
-	    		//Validations Functions
-	    		CheckName: function() {
-	    			var name = this.get('credentials.name');
+				//Validations Functions
+				CheckNick: function() {
+					var nick = this.get('credentials.nick');
 
-	    			if(name.length >= 255)
-    				{
-	    				this.set('error_name.state', true);
-	    				this.set('error_name.message', 'Name inserted was too long');
-	    				return false;
-    				}
-	    			else
-	    			{
-	    				this.set('error_name.state', false);
-	    				this.set('error_name.message', '');
-	    				return true;
-	    			}
-	    		},
-
-	    		CheckEmail: function() {
-	    			var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-	    			var email = this.get('credentials.email');
-
-	    			if(email.length >= 50)
+					if(nick.length >= 50)
 					{
-    					this.set('error_email', true);
-    					return false;
-    				}
-	    			else if(!filter.test(email))
-    				{
-	    				this.set('error_email', true);
-	    				return false;
-    				}
-	    			else
-	    			{
-	    				this.set('error_email', false);
-	    				return true;
-	    			}
-	    		},
+						this.set('error_nick', true);
+						return false;
+					}
+					else
+					{
+						this.set('error_nick', false);
+						return true;
+					}
+				},
 
-	    		CheckPassword: function() {
-	    			var password = this.get('credentials.password');
+				CheckName: function() {
+					var name = this.get('credentials.name');
 
-	    			if(password.principal.length < 100)
-	    			{
-	    				this.set('error_password.principal', false);
-	    				return true;
-	    			}
-	    			else
-	    			{
-	    				this.set('error_password.principal', true);
-	    				return false;
-	    			}
-	    		},
+					if(name.length >= 255)
+					{
+						this.set('error_name.state', true);
+						this.set('error_name.message', 'Name inserted was too long');
+						return false;
+					}
+					else
+					{
+						this.set('error_name.state', false);
+						this.set('error_name.message', '');
+						return true;
+					}
+				},
 
-	    		ConfirmPassword: function() {
+				CheckEmail: function() {
+					var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+					var email = this.get('credentials.email');
+
+					if(email.length >= 50)
+					{
+						this.set('error_email', true);
+						return false;
+					}
+					else if(!filter.test(email))
+					{
+						this.set('error_email', true);
+						return false;
+					}
+					else
+					{
+						this.set('error_email', false);
+						return true;
+					}
+				},
+
+				CheckPassword: function() {
+					var password = this.get('credentials.password');
+
+					if(password.principal.length < 100)
+					{
+						this.set('error_password.principal', false);
+						return true;
+					}
+					else
+					{
+						this.set('error_password.principal', true);
+						return false;
+					}
+				},
+
+				ConfirmPassword: function() {
 					var password = this.get('credentials.password');
 
 					if(password.principal === password.confirm)
 					{
 						this.set('error_password.confirm', false);
 						return true;
-	    			}
-	    			else
-	    			{
-	    				this.set('error_password.confirm', true);
-	    				return false;
-	    			}
-	    		},
+					}
+					else
+					{
+						this.set('error_password.confirm', true);
+						return false;
+					}
+				},
 
-	    		CheckDay: function() {
-	    			var day = this.get('credentials.day');
+				CheckDay: function() {
+					var day = this.get('credentials.day');
 
-	    			if(day > 31)
-	    			{
-	    				this.set('credentials.day', 31);
-	    				this.set('error_birth', true);
-	    				return false;
-	    			}
-	    			else if(day < 1)
-	    			{
-	    				this.set('credentials.day', 1);
-	    				this.set('error_birth', true);
-	    				return false;
-	    			}
-	    			else
-	    			{
-	    				this.set('error_birth', false);
-	    				return true;
-	    			}
-	    		},
+					if(day > 31)
+					{
+						this.set('credentials.day', 31);
+						this.set('error_birth', true);
+						return false;
+					}
+					else if(day < 1)
+					{
+						this.set('credentials.day', 1);
+						this.set('error_birth', true);
+						return false;
+					}
+					else
+					{
+						this.set('error_birth', false);
+						return true;
+					}
+				},
 
-	    		CheckMonth: function() {
-	    			if(this.get('credentials.month') == '')
-	    			{
-	    				this.set('error_birth', true);
-	    				return false;
-	    			}
-	    			else
-	    			{
-	    				this.set('error_birth', false);
-	    				return true;
-	    			}
-	    		},
+				CheckMonth: function() {
+					if(this.get('credentials.month') == '')
+					{
+						this.set('error_birth', true);
+						return false;
+					}
+					else
+					{
+						this.set('error_birth', false);
+						return true;
+					}
+				},
 
-	    		CheckYear: function() {
-	    			var year = this.get('credentials.year');
+				CheckYear: function() {
+					var year = this.get('credentials.year');
 
-	    			if(year > moment().year())
-	    			{
-	    				this.set('credentials.year', moment().year());
-	    				this.set('error_birth', true);
-	    				return false;
-	    			}
-	    			else if(year < moment().year() - 100)
-	    			{
-	    				this.set('credentials.year', moment().year() - 100);
-	    				this.set('error_birth', true);
-	    				return false;
-	    			}
-	    			else
-	    			{
-	    				this.set('error_birth', false);
-	    				return true;
-	    			}
-	    		},
+					if(year > moment().year())
+					{
+						this.set('credentials.year', moment().year());
+						this.set('error_birth', true);
+						return false;
+					}
+					else if(year < moment().year() - 100)
+					{
+						this.set('credentials.year', moment().year() - 100);
+						this.set('error_birth', true);
+						return false;
+					}
+					else
+					{
+						this.set('error_birth', false);
+						return true;
+					}
+				},
 
-	    		CheckDate: function() {
-	    			var day = this.get('credentials.day');
-	    			var month = this.get('credentials.month');
-	    			var year = this.get('credentials.year');
-	    			var date = moment(day + '-' + month + '-' + year, 'DD-MMMM-YYYY');
+				CheckDate: function() {
+					var day = this.get('credentials.day');
+					var month = this.get('credentials.month');
+					var year = this.get('credentials.year');
+					var date = moment(day + '-' + month + '-' + year, 'DD-MMMM-YYYY');
 
-	    			if(
-	    				this.CheckDay() &&
-	    				this.CheckMonth() &&
-	    				this.CheckYear() &&
-	    				date.isValid() && date.isBefore(moment())
-    				)
-	    				return true;
-	    			else
-	    				return false;
-	    		},
+					if(
+						this.CheckDay() &&
+						this.CheckMonth() &&
+						this.CheckYear() &&
+						date.isValid() && date.isBefore(moment())
+					)
+						return true;
+					else
+						return false;
+				},
 
-	    		CheckGender: function() {
-	    			if(this.get('credentials.gender') == '')
-	    			{
-	    				this.set('error_gender', true);
-	    				return false;
-	    			}
-	    			else
-	    			{
-	    				this.set('error_gender', false);
-	    				return true;
-	    			}
-	    		},
+				CheckGender: function() {
+					if(this.get('credentials.gender') == '')
+					{
+						this.set('error_gender', true);
+						return false;
+					}
+					else
+					{
+						this.set('error_gender', false);
+						return true;
+					}
+				},
 
-	    		CheckContract: function() {
-	    			if(this.get('contract') == '')
-	    			{
-	    				this.set('error_contract', true);
-	    				return false;
-	    			}
-	    			else
-	    			{
-	    				this.set('error_contract', false);
-	    				return true;
-	    			}
-	    		},
+				CheckContract: function() {
+					if(this.get('contract') == '')
+					{
+						this.set('error_contract', true);
+						return false;
+					}
+					else
+					{
+						this.set('error_contract', false);
+						return true;
+					}
+				},
 
-	    		CheckForm: function() {
-	    			if(
-	    				this.CheckName() &&
-	    				this.CheckEmail() &&
-	    				this.CheckPassword() &&
-	    				this.ConfirmPassword() &&
-	    				this.CheckDate() &&
-	    				this.CheckGender() &&
-	    				this.CheckContract()
-    				)
-	    				return true;
-	    			else
-	    				return false;
-	    		},
+				CheckForm: function() {
+					if(
+						this.CheckName() &&
+						this.CheckEmail() &&
+						this.CheckPassword() &&
+						this.ConfirmPassword() &&
+						this.CheckDate() &&
+						this.CheckGender() &&
+						this.CheckContract()
+					)
+						return true;
+					else
+						return false;
+				},
 
-	    		submit: function() {
-	    			//if(this.CheckForm())
-	    			//{
-	    				console.log(this.get('credence'));
+				Submit: function() {
+					//if(this.CheckForm())
+					//{
+						$token = "{{ csrf_token() }}";
 
-	    				/*
-	    				this.server.post('/signup/', this.get('credence.name')).then(function(xhr, response) {
-							console.log(response);
-	    				}.bind(this));
-	    				*/
-
-	    				/*
-	    				this.server.post('/posttest').then(function(xhr, response) {
-
-	    				}.bind(this));
-	    				*/
-	    				
-	    				$.get('http://localhost:8080/test/casa', function(response) {
-	    					console.log(response);
-	    				});
-
-	    				$.post('http://localhost:8080/posttest', function(response) {
-	    					console.log(response);
-	    				});
-
-	    				/*
-	    				this.server.get('/test/' + this.get('credence.name')).then(function(xhr, response) {
-							console.log(response);
-	    				}.bind(this));
-	    				*/
-	    			//}
-	    		},
+						/*
+						$.ajax({
+							type: 'POST',
+							url: 'http://localhost:8080/posttest',
+							data: { data: this.get('credence') },
+							dataType: 'json',
+							success: function(response) {
+								console.log(response);
+							},
+						});
+						*/				
+						
+						this.server.post('/register', this.get('credentials'), {dataType: 'json'}).then(function(xhr, response) {
+							this.set('server_message.Visible', true);
+							this.set('server_message.State', response['State']);
+							this.set('server_message.Message', response['Message']);
+						}.bind(this));
+					//}
+				},
 			});
 
-  			ractive.observe('credentials', function() {
-  				
-  			});
+			var s31 = new S31({
 
-  			ractive.start();
+			});
+
+			s31.start();  			
   		</script>
   		<!--RACTIVE SCRIPT-->
 	</body>
