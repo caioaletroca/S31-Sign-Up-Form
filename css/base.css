@@ -12,83 +12,6 @@ body {
 	font-family: Arial;
 }
 
-/*Basic Style --------------------------------------------------------------*/
-
-/*Navigation Bar for Mobile --------------------------------------------------------------*/
-#navigation_mobile {
-	flex-direction: column;
-
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	width: 60%;
-
-	background-color: #00334d;
-	z-index: 99;
-}
-
-#navigation_mobile a {
-	width: 80%;
-
-	margin-right: auto;
-	margin-left: auto;
-	padding-top: 25px;
-	padding-bottom: 25px;
-	padding-right: 50px;
-	padding-left: 50px;	
-	
-	color: white;
-	font-size: 1.5em;
-	border-bottom: 1px solid white;
-}
-
-#navigation_mobile a:link, 
-#navigation_mobile a:visited {
-	text-decoration: none;
-}
-
-#navigation_mobile a:hover {
-	color: grey;
-}
-
-#close_nav {
-	display: flex;
-	align-items: center;
-
-	position: absolute;
-	margin-top: 10px;
-	margin-right: 10px;
-	right: 0;
-	height: 40px;
-	width: 32px;
-
-	background: url('icon.png') -40px 0px;
-}
-
-.nav_logo {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-
-	height: 150px;
-	width: 100%;
-	
-	margin-right: auto;
-	margin-left: auto;
-	
-	color: white;
-	font-size: 2em;
-
-	border-bottom: 1px solid white;
-	
-	background-color: #002233;
-}
-
-.nav_logo img {
-	height: 150px;
-	width: 150px;
-}
-
 /*Header Style --------------------------------------------------------------*/
 #header {
 	position: fixed;	
@@ -192,7 +115,9 @@ body {
 	width: 100%;
 }
 
-.development_advise {
+.development_advise,
+.message_box_error,
+.message_box_accept {
 	width: 30%;
 	margin-top: 110px;
 	margin-right: auto;
@@ -208,6 +133,17 @@ body {
 	color: darkred;
 
 	background-color: rgb(255, 232, 232);
+}
+
+.message_box_error,
+.message_box_accept {
+	margin-top: 10px;
+}
+
+.message_box_accept {
+	border-color: lightgreen;
+	color: darkgreen;
+	background-color: rgb(225, 255, 225);
 }
 
 .development_advise p {
@@ -481,212 +417,5 @@ body {
 
 	.inputform {
 		width: 60%;
-	}
-}
-
-/*Mobile Style  --------------------------------------------------------------*/
-@media only screen and (max-device-width: 768px)
-{
-	#container {
-		display: initial;
-		width: initial;
-		height: initial;
-	}
-
-	/*Header Style*/
-	#header {
-		height: 70px;
-	}
-
-	.header_container {
-		width: 95%;
-	}
-
-	/*Content Style*/
-	.development_advise {
-		width: 60%;
-	}
-
-	.inputform {
-		width: 60%;
-	}
-
-	/*Footer Style*/
-	.email_links {
-		margin-top: 10px;
-	}
-
-	.social_links {
-		width: 95%;
-	}
-
-	.links {
-		width: 95%;
-	}
-}
-
-@media only screen and (max-device-width: 425px)
-{
-	/*Navegation Bar Style*/
-	#navigation_mobile {
-		width: 90%;
-	}
-
-	#navigation_mobile a {
-		width: 65%;
-	}
-
-	/*
-	#close_nav {
-		height: 40px;
-		width: 40px;
-	}
-	*/
-
-	.nav_logo {
-		font-size: 1.5em;
-	}
-
-	.nav_logo img {
-		height: 125px;
-		width: 125px;
-	}
-
-	/*Header Style*/
-	#header {
-		height: 70px;
-	}
-
-	.header_container {
-		width: 100%;
-	}
-
-	.head_logo {
-		margin-left: auto;
-	}
-
-	.head_logo img {
-		height: 45px;
-		width: 45px;
-	}
-
-	#name_logo {
-		font-size: 0.9em;
-		margin-left: 10px;
-	}
-
-	.header_links {
-		display: none;
-	}
-
-	.device_menu {
-		height: 100%;
-		width: 100px;
-		display: flex;
-		align-items: center;
-
-		background-color: red;
-	}
-
-	.device_menu p {
-		text-align: center;
-	}
-
-	/*Content Style*/
-	.development_advise {
-		width: 95%;
-
-		margin-top: 80px;
-	}
-
-	.inputform {
-		width: 95%;
-	}
-
-	.inputform input[type='button'] {
-		width: 95%;
-	}
-
-	/*Footer Style*/
-	.social_links {
-		width: 95%;
-		flex-direction: column;
-
-		margin: auto;
-	}
-
-	.email_links {
-		text-align: center;
-	}
-
-	.social_icons {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: auto;
-	}
-
-	.img_link {
-		height: 50px;
-		width: 50px
-	}
-
-	.links {
-		width: 100%;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.links p {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.links a {
-		width: 50%;
-		margin-top: 5px;
-		margin-bottom: 5px;
-		margin-right: 30px;
-		text-align: center;
-	}
-
-	#CopyrightText {
-		width: 100%;
-		margin-bottom: 10px;
-
-		text-align: center;
-	}
-}
-
-@media only screen and (max-device-width: 320px) {
-	/*Navegation Bar Style*/
-	#navigation_mobile {
-		width: 95%;
-	}
-
-	#navigation_mobile a {
-		width: 60%;
-	}
-
-	.nav_logo {
-		height: 120px;
-
-		font-size: 1.2em;
-	}
-
-	.nav_logo img {
-		height: 100px;
-		width: 100px;
-	}
-
-	/*Header Style*/
-	#header {
-		height: 60px;
-	}
-
-	.inputform {
-		font-size: 1.3em
 	}
 }
