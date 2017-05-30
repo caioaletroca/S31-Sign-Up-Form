@@ -9,17 +9,17 @@
 	</head>
 	<body>
 		<!--CSS Styles-->
-		<link rel="stylesheet" type="text/css" href="css/base.css">
-		<link rel="stylesheet" type="text/css" href="css/mobile.css">
+		<link rel="stylesheet" type="text/css" href="http://192.168.25.219:3000/test/css/sign-up.css">
+		<link rel="stylesheet" type="text/css" href="http://192.168.25.219:3000/test/css/sign-up-mobile.css">
 
 		<!--JavaScript-->
-		<script src="http://hammerjs.github.io/dist/hammer.min.js"></script>
-		<script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
-		<script src="js/ractive-events-swipe.js"></script>
-		<script src="js/moment.min.js"></script>
-		<script src='js/jquery-3.2.1.js'></script>
+		<script src="http://192.168.25.219:3000/test/js/hammer.min.js"></script>
+		<script src='http://192.168.25.219:3000/test/js/ractive.min.js'></script>
+		<script src="http://192.168.25.219:3000/test/js/ractive-events-swipe.js"></script>
+		<script src="http://192.168.25.219:3000/test/js/moment.min.js"></script>
+		<script src='http://192.168.25.219:3000/test/js/jquery-3.2.1.js'></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/qwest/4.4.5/qwest.min.js"></script>
-		<script src='js/script.js'></script>
+		<script src="http://192.168.25.219:3000/test/js/script.js"></script>
 
 		<!--Ractive Holder-->
 		<div id='container'></div>
@@ -49,7 +49,7 @@
 					<!--S31 Logo-->
 					<div class="head_logo">
 						<a href="#">
-							<img src="resources/discord_icon.png">
+							<img src="http://192.168.25.219:3000/test/resources/discord_icon.png">
 						</a>
 						<a href="#">
 							<div id="name_logo">
@@ -94,6 +94,14 @@
 				{{/Visible}}
 				{{/with}}
 				<!--Server Error Box-->
+
+				<!--Loading Animation-->
+				{{#animation_trigger}}
+				<div class="message_wait">
+					<p>Please, wait for the Sign Up ends...</p>
+				</div>
+				{{/animation_trigger}}
+				<!--Loading Animation-->
 
 				<h1 id="form_title">Tester Sign Up</h1>
 
@@ -147,8 +155,6 @@
 						</div>
 					</div>
 
-					
-
 					<!--Contract CheckBox-->
 					<div class="input_field">
 						<div class="contract_radio_group {{#if error_contract}}error_input{{/if}}" on-click="@this.SetContract()">
@@ -158,12 +164,20 @@
 					</div>
 					<!--Contract CheckBox-->
 
-					<input type="button" name="singup" value="Sign Up" on-click='@this.Submit()'>
+					<input id="sign-up-button" type="button" name="sign-up-button" value="Sign Up" on-click='@this.Submit()'>
+
+					<!--Loading Animation-->
+			  		{{#animation_trigger}}
+			  		<img id="loading_icon" src="resources/loading_icon.gif">
+			  		{{/animation_trigger}}
+			  		<!--Loading Animation-->
 				</div>
 	  			{{/with}}
 		  		<!--Main Subscription Form-->
 	  		</div>
 	  		<!--Content-->
+
+
 
 			<!--Footer-->
 	  		<footer class="footer">
@@ -218,7 +232,7 @@
 
   		<!--RACTIVE SCRIPT-->
   		<script type="text/javascript">
-			var S31 = Ractive.extend({
+			var script = new Script({
 				el: '#container',
 				template: '#main',
 
@@ -282,53 +296,10 @@
 						server_message: [
 							{ Visible: false },
 							{ State: false },
+							{ Object: '' },
 							{ Message: '' }
 						],
-
-						//Navegation Bar Control
-						nav_left_position: -500,
-						nav_height: 0,
-						nav_display: 'none',
 					}
-				},
-
-				server: qwest,
-				api: 'http://192.168.25.219:8080',
-
-				CheckSpecialCharacters: function(text) {
-					return /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(text);
-				},
-
-				start: function() {
-					this.server.base = this.api;
-
-					this.set('nav_height', document.documentElement.scrollHeight);
-
-					/*
-					$.ajaxSetup({
-					    headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						}
-					});
-					*/
-				},
-
-				//Mobile Control
-				OpenNavegation: function() {
-					this.set('nav_display', 'flex');
-					this.animate('nav_left_position', 0, {
-						easing: 'easeOut',
-						duration: 300,
-					});
-				},
-
-				CloseNavegation: function() {
-					this.animate('nav_left_position', -500, {
-						easing: 'easeInOut',
-						duration: 300,
-					}).then( function() {
-						this.set('nav_display', 'none');
-					});
 				},
 
 				//Form Control
@@ -553,8 +524,11 @@
 				},
 
 				Submit: function() {
-					//if(this.CheckForm())
-					//{
+					//Reseting Server Message
+					this.set("server_message.Visible", false);
+
+					if(this.CheckForm())
+					{
 						$token = "{{ csrf_token() }}";
 
 						/*
@@ -567,22 +541,57 @@
 								console.log(response);
 							},
 						});
-						*/				
-						
+						*/
+						//Shows Loading Animation
+						this.set('animation_trigger', true);
+						$("#sign-up-button").attr('disabled', true);
+
 						this.server.post('/register', this.get('credentials'), {dataType: 'json'}).then(function(xhr, response) {
 							this.set('server_message.Visible', true);
 							this.set('server_message.State', response['State']);
 							this.set('server_message.Message', response['Message']);
+
+							this.ErrorHandle(response['Type']);
+
+							//Ends Animation
+							this.set('animation_trigger', false);
+							$("#sign-up-button").attr('disabled', false);
 						}.bind(this));
-					//}
+					}
+
+					/*
+					this.server.get('http://192.168.25.219:3000/test/components/SignUp.html').then(function(xhr, response) {
+					}.bind(this));
+					*/
+
+					/*
+					var ready = Promise.all([
+						function(resolve, reject) {
+							console.log("casa");
+
+							resolve("Worked");
+						}
+					]);
+
+					ready.then(function(result) {
+						console.log(result[0]);
+					});
+					*/
 				},
+
+				ErrorHandle: function(ObjectName) {
+					if(ObjectName == 'Email')
+					{
+						this.set('error_email', true);
+					}
+					else
+					{
+						this.set('error_email', false);
+					}
+				}
 			});
 
-			var s31 = new S31({
-
-			});
-
-			s31.start();  			
+			script.start();			
   		</script>
   		<!--RACTIVE SCRIPT-->
 	</body>
