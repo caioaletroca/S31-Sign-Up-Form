@@ -32,10 +32,6 @@ body {
 	margin: auto;
 }
 
-.device_menu {
-	display: none;
-}
-
 .head_logo {
 	height: 100%;
 	display: flex;
@@ -106,18 +102,8 @@ body {
 	color: grey;
 }
 
-/*Form Input Style --------------------------------------------------------------*/
-#content {	
-	display: flex;	
-	flex-direction: column;
-	flex: 1;
-
-	width: 100%;
-}
-
-.development_advise,
-.message_box_error,
-.message_box_accept {
+/*Base Content --------------------------------------------------------------*/
+.development_advise {
 	width: 30%;
 	margin-top: 110px;
 	margin-right: auto;
@@ -135,17 +121,6 @@ body {
 	background-color: rgb(255, 232, 232);
 }
 
-.message_box_error,
-.message_box_accept {
-	margin-top: 10px;
-}
-
-.message_box_accept {
-	border-color: lightgreen;
-	color: darkgreen;
-	background-color: rgb(225, 255, 225);
-}
-
 .development_advise p {
 	margin-left: 20px;
 	margin-right: 20px;
@@ -154,139 +129,6 @@ body {
 .development_advise span {
 	color: red;
 	font-style: bold;
-}
-
-#form_title {
-	text-align: center;
-	margin-top: 20px;
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.inputform {
-	display: flex;
-	flex-direction: column;
-
-	width: 30%;
-	margin-top: 20px;
-	margin-right: auto;
-	margin-left: auto;
-	margin-bottom: 60px;
-
-	text-align: center;
-	font-size: 1.2em;
-	box-sizing: border-box;
-	background-color: #f2f2f2;
-	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2),
-				0px 25px 50px rgba(0, 0, 0, 0.1);
-}
-
-.input_field {
-	display: flex;
-	flex-direction: column;
-
-	margin-bottom: 20px;
-}
-
-.inputform input[type='text'],
-.inputform input[type='email'],
-.inputform input[type='password'] {
-	display: block;
-	width: 90%;
-	margin-right: auto;
-	margin-left: auto;
-
-	font-style: italic;
-	font-size: 1em;
-}
-
-.birth_input {
-	display: flex;
-	flex-direction: row;
-
-	width: 90%;
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.birth_input input[type='number'] {
-	width: 32%;
-
-	font-size: 1em;
-	font-style: italic;
-}
-
-.birth_input select{
-	width: 32%;
-
-	margin-left: auto;
-	margin-right: auto;
-
-	font-size: 1em;
-	font-style: italic;
-}
-
-.inputform input[type='button'] {
-	width: 40%;
-	margin-top: 0px;
-	margin-right: auto;
-	margin-left: auto;
-	margin-bottom: 20px;
-	
-	/*border: none;*/
-	font-size: 1.5em;
-}
-
-.text_field_group {
-	margin-top: 10px;
-	margin-bottom: 20px;
-}
-
-.gender_select {
-	width: 50%;
-
-	margin-right: auto;
-	margin-left: auto;
-
-	font-size: 1em;
-	font-style: italic;
-}
-
-.contract_radio_group {
-	width: 90%;
-	margin: auto;
-	padding: 10px 0 10px 0;
-	display: flex;
-	align-items: center;
-
-	border-style: inset;
-	border-width: 1px;
-
-	text-align: center;
-	font-size: 0.7em;
-
-	background-color: #ffe6e6;
-}
-
-.error_message {
-	width: 90%;
-
-	margin-top: 5px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 0px;
-
-	text-align: left;
-	font-size: 0.6em;
-	color: red;
-}
-
-.error_input {
-	border-width: 1px;
-	border-color: red;
-	border-style: solid;
-
-	background-color: rgb(255, 232, 232);
 }
 
 /*Footer Configuration --------------------------------------------------------------*/

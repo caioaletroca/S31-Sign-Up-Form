@@ -1,0 +1,46 @@
+/*Mobile Media Queries  --------------------------------------------------------------*/
+@media only screen and (max-device-width: 768px)
+{
+	/*Content Style*/
+	.development_advise {
+		width: 60%;
+	}
+
+	.message_box_error,
+	.message_box_accept {
+		width: 60%;
+	}
+
+	.inputform {
+		width: 60%;
+	}
+}
+
+@media only screen and (max-device-width: 425px)
+{
+	/*Content Style*/
+	.development_advise {
+		width: 95%;
+
+		margin-top: 80px;
+	}
+
+	.message_box_error,
+	.message_box_accept {
+		width: 95%;
+	}
+
+	.inputform {
+		width: 95%;
+	}
+
+	.inputform input[type='button'] {
+		width: 95%;
+	}
+}
+
+@media only screen and (max-device-width: 320px) {
+	.inputform {
+		font-size: 1.3em
+	}
+}

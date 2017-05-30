@@ -73,6 +73,21 @@
 	width: 150px;
 }
 
+
+/*Header Style   --------------------------------------------------------------*/
+.device_menu {
+	display: none;
+}
+
+.device_menu div {
+	height: 37px;
+	width: 37px;
+
+	margin-left: 20px;
+
+	background: url('icon.png') 0px 0px;
+}
+
 /*Mobile Media Queries  --------------------------------------------------------------*/
 @media only screen and (max-device-width: 768px)
 {
@@ -89,15 +104,6 @@
 
 	.header_container {
 		width: 95%;
-	}
-
-	/*Content Style*/
-	.development_advise {
-		width: 60%;
-	}
-
-	.inputform {
-		width: 60%;
 	}
 
 	/*Footer Style*/
@@ -124,13 +130,6 @@
 	#navigation_mobile a {
 		width: 65%;
 	}
-
-	/*
-	#close_nav {
-		height: 40px;
-		width: 40px;
-	}
-	*/
 
 	.nav_logo {
 		font-size: 1.5em;
@@ -174,26 +173,11 @@
 		display: flex;
 		align-items: center;
 
-		background-color: red;
+		
 	}
 
 	.device_menu p {
 		text-align: center;
-	}
-
-	/*Content Style*/
-	.development_advise {
-		width: 95%;
-
-		margin-top: 80px;
-	}
-
-	.inputform {
-		width: 95%;
-	}
-
-	.inputform input[type='button'] {
-		width: 95%;
 	}
 
 	/*Footer Style*/
@@ -273,9 +257,5 @@
 	/*Header Style*/
 	#header {
 		height: 60px;
-	}
-
-	.inputform {
-		font-size: 1.3em
 	}
 }
