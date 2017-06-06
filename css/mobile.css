@@ -91,12 +91,6 @@
 /*Mobile Media Queries  --------------------------------------------------------------*/
 @media only screen and (max-device-width: 768px)
 {
-	#container {
-		display: initial;
-		width: initial;
-		height: initial;
-	}
-
 	/*Header Style*/
 	#header {
 		height: 70px;
