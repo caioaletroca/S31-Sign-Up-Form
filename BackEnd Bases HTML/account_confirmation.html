@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Confirmation Successful</title>
+	</head>
+	<body>
+		<!--CSS Styles-->
+		<link rel="stylesheet" type="text/css" href="http://caioaletroca.myddns.me/test/css/base.css">
+		<link rel="stylesheet" type="text/css" href="http://caioaletroca.myddns.me/test/css/mobile.css">
+		<link rel="stylesheet" type="text/css" href="http://caioaletroca.myddns.me/test/css/account_confirmation.css">
+
+		<!--JavaScript-->
+		<script src="http://hammerjs.github.io/dist/hammer.min.js"></script>
+		<script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
+		<script src='http://caioaletroca.myddns.me/test/js/ractive-load.js'></script>
+		<script src="http://caioaletroca.myddns.me/test/js/ractive-events-swipe.js"></script>
+		<script src='http://caioaletroca.myddns.me/test/js/jquery-3.2.1.js'></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/qwest/4.4.5/qwest.min.js"></script>
+		<script src='http://caioaletroca.myddns.me/test/js/script.js'></script>
+
+		<!--Ractive Holder-->
+		<div id='container'></div>
+
+		<!--Ractive Control-->
+		<script id='main' type="text/ractive">
+
+			<!--Navigation Bar For Mobile-->
+			<nav id="navigation_mobile" on-swipeleft="@this.CloseNavegation()" style="left: {{nav_left_position}}px; height: {{nav_height}}px; display: {{nav_display}}">
+				<span id="close_nav" on-click="@this.CloseNavegation()"></span>
+				<div class="nav_logo">
+					<img src="http://caioaletroca.myddns.me/test/resources/discord_icon.png">
+					<p>S31 Corporation</p>
+				</div>
+				<a href="#">Home</a>
+				<a href="">About</a>
+			</nav>
+			<!--Navigation Bar For Mobile-->
+
+			<!--Header-->
+			<div id='header'>
+				<div class="header_container">
+					<!--Device Menu-->
+					<div class="device_menu" on-click="@this.OpenNavegation()"><div></div></div>
+					<!--Device Menu-->
+
+					<!--S31 Logo-->
+					<div class="head_logo">
+						<a href="#">
+							<img src="http://caioaletroca.myddns.me/test/resources/discord_icon.png">
+						</a>
+						<a href="#">
+							<div id="name_logo">
+								<p>S31 Corporation</p>
+							</div>
+						</a>
+					</div>
+					<!--S31 Logo-->
+
+					<!--Header Links-->
+					<div class="header_links">
+						<ul>
+							<li>
+								<a href="#">Home</a>
+							</li>
+							<li>
+								<a href="">About</a>
+							</li>
+						</ul>
+					</div>
+					<!--Header Links-->
+
+					
+				</div>
+			</div>
+			<!--Header-->
+
+			<!--Content-->
+			<div id="content">
+				<!--Development Advise-->
+				<div class="development_advise">
+					<p><span>Attention:</span> the official website is under development and some functions may not work properly. However, the subscription form is fully operational.</p>
+				</div>
+				<!--Development Advise-->
+
+				<!--User Message-->
+				<div id="confirmation_message">
+					<p>Your E-mail address has been successful confirmed!</p>
+					<p>You will be redirected in 5 seconds, or click on this link: <a href="http://caioaletroca.myddns.me/test/">Home Page</a></p>
+				</div>
+				<!--User Message-->
+			</div>
+			<!--Content-->
+
+			<!--Footer-->
+	  		<footer class="footer">
+	  			<!--Footer Top-->
+	  			<div class="footer_top">
+		  			<!--Social Links-->
+		  			<div class="social_links">
+		  				<div class="email_links">
+			  				<p>S31 Corporation | s31corporation@gmail.com</p>
+			  			</div>
+
+			  			<div class="social_icons">
+			  				<ul>
+			  					<li>
+						  			<a href="https://discord.gg/tHYexDR">
+						  				<img class="img_link" src="http://caioaletroca.myddns.me/test/resources/discord_icon.png" title="Discord">
+						  				
+						  			</a>
+				  				</li>
+				  				<li>
+						  			<a href="https://discord.gg/tHYexDR">
+						  				<img class="img_link" src="http://caioaletroca.myddns.me/test/resources/discord_icon.png" title="Discord">
+						  			</a>
+				  				</li>
+				  				<li>
+						  			<a href="https://discord.gg/tHYexDR">
+						  				<img class="img_link" src="http://caioaletroca.myddns.me/test/resources/discord_icon.png" title="Discord">
+						  			</a>
+				  				</li>
+				  			</ul>
+			  			</div>
+		  			</div>
+	  				<!--Social Links-->
+	  			</div>
+	  			<!--Footer Top-->
+
+	  			<!--Footer Botton-->
+	  			<div class="links">
+		  			<p>
+		  				<a href="">Privacy Politics</a>
+		  				<a href="">Developer Team</a>
+		  				<a href="">WebSite Map</a>
+		  			</p>
+		  			<p id="CopyrightText">2017 | S31 Corporation</p>
+	  			</div>
+	  			<!--Footer Botton-->
+	  		</footer>
+	  		<!--Footer-->
+
+  		</script>
+  		<!--Ractive Control-->
+
+		<script type="text/javascript">
+			var script = new Script({
+				el: '#container',
+				template: '#main',
+			});
+
+			//window.setTimeout(function() {
+				//window.location.replace("http://caioaletroca.myddns.me/test/");
+			//}, 5000);
+
+			script.start();
+		</script>
+	</body>
+</html>
